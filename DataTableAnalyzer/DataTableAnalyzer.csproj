@@ -6,4 +6,14 @@
         <UseWPF>true</UseWPF>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="CsvHelper" Version="26.0.1" />
+      <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Model\" />
+      <Folder Include="ViewModel\Commands\" />
+    </ItemGroup>
+
 </Project>

@@ -7,6 +7,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Button Content="Open CSV" Command="{Binding OpenCSVCommand}" HorizontalAlignment="Left" Margin="10,10,0,0" Width="134" Height="23" VerticalAlignment="Top" CommandParameter="{Binding ElementName=MainGrid, Mode=OneWay}" />
+        <DataGrid Margin="10,38,10,10" IsReadOnly="True" AutoGenerateColumns="False" Name="MainGrid" />
 
     </Grid>
 </Window>

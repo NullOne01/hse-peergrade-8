@@ -3,12 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:local="clr-namespace:DataTableAnalyzer"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Button Content="Open CSV" Command="{Binding OpenCSVCommand}" HorizontalAlignment="Left" Margin="10,10,0,0" Width="134" Height="23" VerticalAlignment="Top" CommandParameter="{Binding ElementName=MainGrid, Mode=OneWay}" />
-        <DataGrid Margin="10,38,10,10" IsReadOnly="True" AutoGenerateColumns="False" Name="MainGrid" />
+        <DataGrid Margin="10,38,10,10" IsReadOnly="True" AutoGenerateColumns="False" Name="MainGrid">
+            
+        </DataGrid>
 
     </Grid>
 </Window>

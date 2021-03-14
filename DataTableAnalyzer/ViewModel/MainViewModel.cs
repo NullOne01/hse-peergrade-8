@@ -1,4 +1,5 @@
 ﻿using DataTableAnalyzer.View;
+using DataTableAnalyzer.ViewModel.Utilities;
 using GalaSoft.MvvmLight.CommandWpf;
 using Microsoft.Win32;
 using System;
@@ -73,34 +74,65 @@ namespace DataTableAnalyzer.ViewModel
                     Binding = new Binding(string.Format("[{0}]", i))
                 };
 
-                AddContextMenuToColumn(textColumn);
+                AddContextMenuToColumn(textColumn, i);
                 dataGrid.Columns.Add(textColumn);
             }
 
             dataGrid.ItemsSource = SelectedTable.Rows;
         }
 
-        private void AddContextMenuToColumn(DataGridTextColumn textColumn) {
+        private void AddContextMenuToColumn(DataGridTextColumn textColumn, int columnNum) {
             var cm = new ContextMenu();
             MenuItem uniqueColumnsItem = new MenuItem
             {
                 Header = "Количественные данные (гистограмма)"
             };
-            uniqueColumnsItem.Click += (o, e) => OpenUniqueColumns(textColumn);
+            uniqueColumnsItem.Click += (o, e) => OpenUniqueColumns(columnNum);
+
+            if (IsColumnNumeric(columnNum, out List<double> doubleValues)) {
+                MenuItem columnInfoItem = new MenuItem
+                {
+                    Header = "Статистика (для числовых колонок)"
+                };
+                columnInfoItem.Click += (o, e) => OpenColumnInfo(columnNum, doubleValues);
+                cm.Items.Add(columnInfoItem);
+            }
+
             cm.Items.Add(uniqueColumnsItem);
 
             (textColumn.Header as TextBlock).ContextMenu = cm;
         }
 
-        private void OpenUniqueColumns(DataGridTextColumn textColumn) {
+        private bool IsColumnNumeric(int columnNum, out List<double> values) {
+            List<string> valuesStr = new List<string>();
+            foreach (DataRow data in SelectedTable.Rows) {
+                valuesStr.Add(data.ItemArray[columnNum].ToString());
+            }
+
+            if (valuesStr.IsNumberList()) {
+                values = valuesStr.StrToDouble();
+                return true;
+            }
+
+            values = new List<double>();
+            return false;
+        }
+
+        private void OpenUniqueColumns(int columnNum) {
             List<string> values = new List<string>();
             foreach (DataRow data in SelectedTable.Rows) {
-                values.Add((string)data.ItemArray[textColumn.DisplayIndex]);
+                values.Add(data.ItemArray[columnNum].ToString());
             }
 
             UniqueColumnsWindow uniqueColumnsWindow = 
-                new UniqueColumnsWindow(values, (textColumn.Header as TextBlock).Text);
+                new UniqueColumnsWindow(values, SelectedTable.Columns[columnNum].ColumnName);
             uniqueColumnsWindow.Show();
+        }
+
+        private void OpenColumnInfo(int columnNum, List<double> values) {
+            ColumnInfoWindow columnInfoWindow =
+                new ColumnInfoWindow(values, SelectedTable.Columns[columnNum].ColumnName);
+            columnInfoWindow.Show();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

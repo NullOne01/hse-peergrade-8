@@ -1,0 +1,27 @@
+﻿using DataTableAnalyzer.ViewModel;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+
+namespace DataTableAnalyzer.View
+{
+    /// <summary>
+    /// Interaction logic for ColumnInfoWindow.xaml
+    /// </summary>
+    public partial class ColumnInfoWindow : Window
+    {
+        public ColumnInfoWindow(List<double> columnValues, string columnName) {
+            InitializeComponent();
+
+            DataContext = new ColumnInfoViewModel(columnValues, columnName);
+        }
+    }
+}

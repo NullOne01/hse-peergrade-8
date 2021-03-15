@@ -10,6 +10,8 @@ namespace DataTableAnalyzer.ViewModel.Utilities
     public static class ListExtensions
     {
         public static bool IsNumberList(this List<string> list) {
+            if (list.Count <= 0)
+                return false;
             return list.TrueForAll((value) => 
                 double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out double kek));
         }

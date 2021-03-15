@@ -36,11 +36,11 @@ namespace DataTableAnalyzer.ViewModel
         }
 
         public void OpenCSVFile(DataGrid dataGrid) {
-            string newFilePath = OpenCSVDialog();
-            if (newFilePath == string.Empty) {
-                return;
-            }
             try {
+                string newFilePath = OpenCSVDialog();
+                if (newFilePath == string.Empty) {
+                    return;
+                }
                 SelectedTable = TableLoader.ReadFileCSV(newFilePath);
                 XSelectedItem = null;
                 YSelectedItem = null;
@@ -113,7 +113,7 @@ namespace DataTableAnalyzer.ViewModel
         private RelayCommand openGraphCommand;
         public RelayCommand OpenGraphCommand {
             get {
-                openGraphCommand = new RelayCommand(() => OpenGraph(), 
+                openGraphCommand = new RelayCommand(() => OpenGraph(),
                     () => XSelectedItem != null && YSelectedItem != null);
                 return openGraphCommand;
             }
@@ -160,7 +160,7 @@ namespace DataTableAnalyzer.ViewModel
         private void OpenUniqueColumns(int columnNum) {
             List<string> values = ListExtensions.GetColumnRows(columnNum, SelectedTable);
 
-            UniqueColumnsWindow uniqueColumnsWindow = 
+            UniqueColumnsWindow uniqueColumnsWindow =
                 new UniqueColumnsWindow(values, SelectedTable.Columns[columnNum].ColumnName);
             uniqueColumnsWindow.Show();
         }

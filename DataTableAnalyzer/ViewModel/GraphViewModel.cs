@@ -4,6 +4,7 @@ using LiveCharts.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows;
 
 namespace DataTableAnalyzer.ViewModel
 {
@@ -25,12 +26,16 @@ namespace DataTableAnalyzer.ViewModel
             SeriesCollection = new SeriesCollection
             {
                 new LineSeries{
-                    Title = "Линия"
+                    Title = $"{YLabel}({XLabel})"
                 }
             };
-            ObservablePoint[] observablePoints = new ObservablePoint[Math.Min(xValues.Count, yValues.Count)];
+            int pointsCount = Math.Min(xValues.Count, yValues.Count);
+            if (pointsCount >= 1500)
+                MessageBox.Show("Вы собираетесь построить график на >=1500 строк. Вы обрекли себя на долгое ожидание, я не виноват");
+
+            ObservablePoint[] observablePoints = new ObservablePoint[pointsCount];
             ChartValues<ObservablePoint> points = new ChartValues<ObservablePoint>();
-            for (int i = 0; i < Math.Min(xValues.Count, yValues.Count); i++) {
+            for (int i = 0; i < pointsCount; i++) {
                 observablePoints[i] = new ObservablePoint(XValues[i], YValues[i]);
             }
             points.AddRange(observablePoints);

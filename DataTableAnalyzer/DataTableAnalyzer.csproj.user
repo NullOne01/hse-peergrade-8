@@ -5,6 +5,9 @@
     <Compile Update="View\ColumnInfoWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="View\GraphWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="View\UniqueColumnsWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -14,6 +17,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\ColumnInfoWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\GraphWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\UniqueColumnsWindow.xaml">

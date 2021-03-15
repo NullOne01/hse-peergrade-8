@@ -15,8 +15,7 @@ namespace DataTableAnalyzer.ViewModel.Utilities
             return source.Select<TColl, TValue>(selector).Median();
         }
 
-        public static double? Median<T>(
-            this IEnumerable<T> source) {
+        public static double? Median<T>(this IEnumerable<T> source) {
             if (Nullable.GetUnderlyingType(typeof(T)) != null)
                 source = source.Where(x => x != null);
 

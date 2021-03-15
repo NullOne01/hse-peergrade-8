@@ -4,6 +4,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.IO;
@@ -41,6 +42,9 @@ namespace DataTableAnalyzer.ViewModel
             }
             try {
                 SelectedTable = TableLoader.ReadFileCSV(newFilePath);
+                XSelectedItem = null;
+                YSelectedItem = null;
+                NumericItems.Clear();
                 FillDataGrid(dataGrid);
             }
             catch (IOException) {
@@ -94,8 +98,10 @@ namespace DataTableAnalyzer.ViewModel
                 {
                     Header = "Статистика (для числовых колонок)"
                 };
+
                 columnInfoItem.Click += (o, e) => OpenColumnInfo(columnNum, doubleValues);
                 cm.Items.Add(columnInfoItem);
+                NumericItems.Add(SelectedTable.Columns[columnNum]);
             }
 
             cm.Items.Add(uniqueColumnsItem);
@@ -103,11 +109,44 @@ namespace DataTableAnalyzer.ViewModel
             (textColumn.Header as TextBlock).ContextMenu = cm;
         }
 
-        private bool IsColumnNumeric(int columnNum, out List<double> values) {
-            List<string> valuesStr = new List<string>();
-            foreach (DataRow data in SelectedTable.Rows) {
-                valuesStr.Add(data.ItemArray[columnNum].ToString());
+
+        private RelayCommand openGraphCommand;
+        public RelayCommand OpenGraphCommand {
+            get {
+                openGraphCommand = new RelayCommand(() => OpenGraph(), 
+                    () => XSelectedItem != null && YSelectedItem != null);
+                return openGraphCommand;
             }
+        }
+
+        private DataColumn xSelectedItem;
+        public DataColumn XSelectedItem {
+            get => xSelectedItem;
+            set {
+                xSelectedItem = value;
+                OnPropertyChanged("XSelectedItem");
+            }
+        }
+        private DataColumn ySelectedItem;
+        public DataColumn YSelectedItem {
+            get => ySelectedItem;
+            set {
+                ySelectedItem = value;
+                OnPropertyChanged("YSelectedItem");
+            }
+        }
+
+        public ObservableCollection<DataColumn> NumericItems { get; set; } = new ObservableCollection<DataColumn>();
+
+        private void OpenGraph() {
+            List<double> xValues = ListExtensions.GetColumnRows(XSelectedItem.Ordinal, SelectedTable).StrToDouble();
+            List<double> yValues = ListExtensions.GetColumnRows(YSelectedItem.Ordinal, SelectedTable).StrToDouble();
+            GraphWindow graphWindow = new GraphWindow(xValues, yValues, XSelectedItem.ColumnName, YSelectedItem.ColumnName);
+            graphWindow.Show();
+        }
+
+        private bool IsColumnNumeric(int columnNum, out List<double> values) {
+            List<string> valuesStr = ListExtensions.GetColumnRows(columnNum, SelectedTable);
 
             if (valuesStr.IsNumberList()) {
                 values = valuesStr.StrToDouble();
@@ -119,10 +158,7 @@ namespace DataTableAnalyzer.ViewModel
         }
 
         private void OpenUniqueColumns(int columnNum) {
-            List<string> values = new List<string>();
-            foreach (DataRow data in SelectedTable.Rows) {
-                values.Add(data.ItemArray[columnNum].ToString());
-            }
+            List<string> values = ListExtensions.GetColumnRows(columnNum, SelectedTable);
 
             UniqueColumnsWindow uniqueColumnsWindow = 
                 new UniqueColumnsWindow(values, SelectedTable.Columns[columnNum].ColumnName);

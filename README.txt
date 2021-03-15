@@ -4,3 +4,5 @@ Nuget пакетики:
 3) LiveCharts: https://lvcharts.net/ -> графики
 4) LiveCharts.Wpf: https://lvcharts.net/ -> графики
 5) Extended.Wpf.Toolkit: https://github.com/xceedsoftware/wpftoolkit -> для NumericUpDown
+
+Доп. функционала нет. Лишь бы это работало

@@ -9,10 +9,17 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Button Content="Open CSV" Command="{Binding OpenCSVCommand}" HorizontalAlignment="Left" Margin="10,10,0,0" Width="134" Height="23" VerticalAlignment="Top" CommandParameter="{Binding ElementName=MainGrid, Mode=OneWay}" />
-        <DataGrid Margin="10,38,10,10" IsReadOnly="True" AutoGenerateColumns="False" Name="MainGrid">
+        <DataGrid Margin="10,62,10,10" IsReadOnly="True" AutoGenerateColumns="False" Name="MainGrid">
 
         </DataGrid>
-        <TextBlock HorizontalAlignment="Left" Margin="149,10,0,0" Text="Чтобы открыть гистограмму, нужно нажать ПКМ на название(!!!) колонки" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="641"/>
+        <TextBlock HorizontalAlignment="Left" Margin="149,10,0,0" Text="Чтобы открыть гистограмму/инфу, нужно нажать ПКМ на название(!!!) колонки" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="641"/>
+        <StackPanel Orientation="Horizontal" Margin="10,38,0,0" Height="19" VerticalAlignment="Top" HorizontalAlignment="Left" Width="454">
+            <TextBlock Text="X:" TextWrapping="Wrap"/>
+            <ComboBox Width="120" ItemsSource="{Binding NumericItems}" SelectedItem="{Binding XSelectedItem}" DisplayMemberPath="ColumnName"/>
+            <TextBlock Text="Y:" TextWrapping="Wrap" Margin="10,0,0,0"/>
+            <ComboBox Width="120" ItemsSource="{Binding NumericItems}" SelectedItem="{Binding YSelectedItem}" DisplayMemberPath="ColumnName"/>
+            <Button Content="Построить график" Margin="10,0,0,0" Command="{Binding OpenGraphCommand}"/>
+        </StackPanel>
 
     </Grid>
 </Window>

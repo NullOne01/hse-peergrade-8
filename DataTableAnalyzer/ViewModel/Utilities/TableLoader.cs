@@ -11,6 +11,11 @@ namespace DataTableAnalyzer.ViewModel
 {
     class TableLoader
     {
+        /// <summary>
+        /// Convert file to DataTable.
+        /// </summary>
+        /// <param name="filepath">FilePath to file.</param>
+        /// <returns>CSV DataTable.</returns>
         public static DataTable ReadFileCSV(string filepath) {
             DataTable dt = new DataTable();
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)

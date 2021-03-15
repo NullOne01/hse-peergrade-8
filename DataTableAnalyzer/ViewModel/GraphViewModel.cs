@@ -29,10 +29,13 @@ namespace DataTableAnalyzer.ViewModel
                     Title = $"{YLabel}({XLabel})"
                 }
             };
+
+            // Using math to avoid some possible (or impossible) bugs.
             int pointsCount = Math.Min(xValues.Count, yValues.Count);
             if (pointsCount >= 1500)
                 MessageBox.Show("Вы собираетесь построить график на >=1500 строк. Вы обрекли себя на долгое ожидание, я не виноват");
 
+            // Some perfomance tip from LiveCharts guide.
             ObservablePoint[] observablePoints = new ObservablePoint[pointsCount];
             ChartValues<ObservablePoint> points = new ChartValues<ObservablePoint>();
             for (int i = 0; i < pointsCount; i++) {

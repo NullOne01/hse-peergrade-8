@@ -13,9 +13,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="ViewModel\Resources\MainDictionary.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="View\ColumnInfoWindow.xaml">
       <SubType>Designer</SubType>
     </Page>

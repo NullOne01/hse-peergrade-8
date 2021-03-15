@@ -35,6 +35,10 @@ namespace DataTableAnalyzer.ViewModel
             }
         }
 
+        /// <summary>
+        /// Open dialogue, read csv from file, fill table.
+        /// </summary>
+        /// <param name="dataGrid"> UI element of datatable. </param>
         public void OpenCSVFile(DataGrid dataGrid) {
             try {
                 string newFilePath = OpenCSVDialog();
@@ -55,6 +59,10 @@ namespace DataTableAnalyzer.ViewModel
             }
         }
 
+        /// <summary>
+        /// Open CSV dialog to open csv file.
+        /// </summary>
+        /// <returns>FilePath of opened file.</returns>
         private string OpenCSVDialog() {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "CSV table (*.csv)|*.csv";
@@ -65,6 +73,10 @@ namespace DataTableAnalyzer.ViewModel
             return string.Empty;
         }
 
+        /// <summary>
+        /// Fill UI dataGrid with DataTable.
+        /// </summary>
+        /// <param name="dataGrid"></param>
         private void FillDataGrid(DataGrid dataGrid) {
             // Add columns manually, to prevent bug 
             // (header's binding could have special chars like '/', '{'. the app could crush)
@@ -85,6 +97,11 @@ namespace DataTableAnalyzer.ViewModel
             dataGrid.ItemsSource = SelectedTable.Rows;
         }
 
+        /// <summary>
+        /// Add context menu options to the column's headers.
+        /// </summary>
+        /// <param name="textColumn">Column</param>
+        /// <param name="columnNum">Number of the column.</param>
         private void AddContextMenuToColumn(DataGridTextColumn textColumn, int columnNum) {
             var cm = new ContextMenu();
             MenuItem uniqueColumnsItem = new MenuItem
@@ -101,6 +118,7 @@ namespace DataTableAnalyzer.ViewModel
 
                 columnInfoItem.Click += (o, e) => OpenColumnInfo(columnNum, doubleValues);
                 cm.Items.Add(columnInfoItem);
+                // Add this column to the list of columns which are used for GraphWindow.
                 NumericItems.Add(SelectedTable.Columns[columnNum]);
             }
 
@@ -119,6 +137,9 @@ namespace DataTableAnalyzer.ViewModel
             }
         }
 
+        /// <summary>
+        /// Value from ComboBox X.
+        /// </summary>
         private DataColumn xSelectedItem;
         public DataColumn XSelectedItem {
             get => xSelectedItem;
@@ -127,6 +148,10 @@ namespace DataTableAnalyzer.ViewModel
                 OnPropertyChanged("XSelectedItem");
             }
         }
+
+        /// <summary>
+        /// Value from ComboBox Y.
+        /// </summary>
         private DataColumn ySelectedItem;
         public DataColumn YSelectedItem {
             get => ySelectedItem;
@@ -138,6 +163,9 @@ namespace DataTableAnalyzer.ViewModel
 
         public ObservableCollection<DataColumn> NumericItems { get; set; } = new ObservableCollection<DataColumn>();
 
+        /// <summary>
+        /// Open GraphWindow.
+        /// </summary>
         private void OpenGraph() {
             List<double> xValues = ListExtensions.GetColumnRows(XSelectedItem.Ordinal, SelectedTable).StrToDouble();
             List<double> yValues = ListExtensions.GetColumnRows(YSelectedItem.Ordinal, SelectedTable).StrToDouble();
@@ -145,6 +173,12 @@ namespace DataTableAnalyzer.ViewModel
             graphWindow.Show();
         }
 
+        /// <summary>
+        /// Check if column has only numeric values. Returns list of numberic values.
+        /// </summary>
+        /// <param name="columnNum"> Number of the column. </param>
+        /// <param name="values"> Return list of numberic values. </param>
+        /// <returns> True if column is numeric. </returns>
         private bool IsColumnNumeric(int columnNum, out List<double> values) {
             List<string> valuesStr = ListExtensions.GetColumnRows(columnNum, SelectedTable);
 
@@ -157,6 +191,10 @@ namespace DataTableAnalyzer.ViewModel
             return false;
         }
 
+        /// <summary>
+        /// Open UniqueColumnsWindow.
+        /// </summary>
+        /// <param name="columnNum">Number of the column.</param>
         private void OpenUniqueColumns(int columnNum) {
             List<string> values = ListExtensions.GetColumnRows(columnNum, SelectedTable);
 
@@ -165,6 +203,11 @@ namespace DataTableAnalyzer.ViewModel
             uniqueColumnsWindow.Show();
         }
 
+        /// <summary>
+        /// Open ColumnInfo Window.
+        /// </summary>
+        /// <param name="columnNum">Number of the column.</param>
+        /// <param name="values">Values to pass into ColumnInfo Window.</param>
         private void OpenColumnInfo(int columnNum, List<double> values) {
             ColumnInfoWindow columnInfoWindow =
                 new ColumnInfoWindow(values, SelectedTable.Columns[columnNum].ColumnName);

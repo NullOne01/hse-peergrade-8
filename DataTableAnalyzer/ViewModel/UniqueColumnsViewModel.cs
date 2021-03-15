@@ -24,7 +24,6 @@ namespace DataTableAnalyzer.ViewModel
             }
         }
 
-        public Func<int, string> Formatter { get; set; }
         private List<string> ColumnValues { get; set; } = new List<string>();
         private string ColumnName { get; set; }
         private Dictionary<string, int> ColumnValuesDict { get; set; } = new Dictionary<string, int>();
@@ -58,7 +57,9 @@ namespace DataTableAnalyzer.ViewModel
             Labels = ColumnValuesDict.Keys.ToArray();
         }
 
-
+        /// <summary>
+        /// Count unique values columns by filling dictionary.
+        /// </summary>
         private void CountUniqueValues() {
             foreach (var data in ColumnValues) {
                 if (!ColumnValuesDict.ContainsKey(data))
@@ -67,12 +68,18 @@ namespace DataTableAnalyzer.ViewModel
             }
         }
 
+        /// <summary>
+        /// Should numeric UI items show?
+        /// </summary>
         public Visibility ShouldNumericShow {
             get {
                 return ColumnValues.IsNumberList() ? Visibility.Visible : Visibility.Collapsed;
             }
         }
 
+        /// <summary>
+        /// Set up columns if values are numeric.
+        /// </summary>
         private void SetUpNumericColumns() {
             // R.I.P. perfomance.
             List<double> values = ColumnValues.StrToDouble();
@@ -104,6 +111,9 @@ namespace DataTableAnalyzer.ViewModel
             Labels = newLabels;
         }
 
+        /// <summary>
+        /// Number of columns if values are numeric.
+        /// </summary>
         private int numericColumnCount = 5;
         public int NumericColumnCount {
             get => numericColumnCount;

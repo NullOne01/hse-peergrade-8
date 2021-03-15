@@ -10,11 +10,19 @@ namespace DataTableAnalyzer.ViewModel.Utilities
     /// </summary>
     public static class LINQExtensions
     {
+        /// <summary>
+        /// Find Median of the IEnumerable.
+        /// </summary>
+        /// <returns>Median</returns>
         public static double? Median<TColl, TValue>(this IEnumerable<TColl> source,
             Func<TColl, TValue> selector) {
             return source.Select<TColl, TValue>(selector).Median();
         }
 
+        /// <summary>
+        /// Find Median of the IEnumerable.
+        /// </summary>
+        /// <returns>Median</returns>
         public static double? Median<T>(this IEnumerable<T> source) {
             if (Nullable.GetUnderlyingType(typeof(T)) != null)
                 source = source.Where(x => x != null);
@@ -32,10 +40,18 @@ namespace DataTableAnalyzer.ViewModel.Utilities
                 return Convert.ToDouble(source.ElementAt(midpoint));
         }
 
+        /// <summary>
+        /// Find StandardDeviation of IEnumerable.
+        /// </summary>
+        /// <returns>Median</returns>
         public static double StandardDeviation(this IEnumerable<double> values) {
             return Math.Sqrt(values.Dispersion());
         }
 
+        /// <summary>
+        /// Find Dispersion of IEnumerable.
+        /// </summary>
+        /// <returns>Median</returns>
         public static double Dispersion(this IEnumerable<double> values) {
             double avg = values.Average();
             return values.Average(v => Math.Pow(v - avg, 2));
